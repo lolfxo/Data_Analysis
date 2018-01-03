@@ -1,10 +1,12 @@
 Package: hypothesistests
-Title: What the Package Does (one line, title case)
+Title: functions for hypothesis testing
 Version: 0.0.0.9000
 Authors@R: person("Hong", "Noh", email = "hongnoh12@gmail.com", role = "cre")
-Description: The package contains in it functions used to test for difference of means and difference of proportions of sample data.
+Description: The package contains in it functions used to test for difference of means and difference of proportions of sample data. This is useful for A/B testing.
 Depends: R (>= 3.4.3)
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/lolfxo/Data_Analysis
+BugReports: Please email me with any issues.
 RoxygenNote: 6.0.1.9000
