@@ -22,5 +22,8 @@ setwd("C:/Users/hongn/Documents/GitHub/Data_Analysis")
 
 setwd("./hypothesistests")
 
+# create the document
 document()
 
+# install 'hypothesistests' package straight from GitHub
+install_github("lolfxo/Data_Analysis",subdir="hypothesistests")
