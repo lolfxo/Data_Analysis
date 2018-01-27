@@ -13,7 +13,8 @@ url = 'http://www.imdb.com/search/title?count=1000&groups=oscar_best_picture_win
 # read HTML code from website
 webpage_HTML = read_html(url)
 
+year_data = html_nodes(webpage_HTML,".lister-item.mode-advanced")
+first_result= year_data[1]
 
-
-# runtime data
-runtime_data_html <- html_nodes(webpage_HTML,'.runtime')
+runtime_data = first_result %>% html_nodes(".text-muted") %>% html_nodes(".runtime") %>% html_text()
+certificate_data = first_result %>% html_nodes(".text-muted") %>% html_nodes(".certificate") %>% html_text()
