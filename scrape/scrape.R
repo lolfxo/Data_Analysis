@@ -13,8 +13,27 @@ url = 'http://www.imdb.com/search/title?count=1000&groups=oscar_best_picture_win
 # read HTML code from website
 webpage_HTML = read_html(url)
 
-year_data = html_nodes(webpage_HTML,".lister-item.mode-advanced")
-first_result= year_data[1]
+box_data = html_nodes(webpage_HTML,".lister-item.mode-advanced")
 
-runtime_data = first_result %>% html_nodes(".text-muted") %>% html_nodes(".runtime") %>% html_text()
-certificate_data = first_result %>% html_nodes(".text-muted") %>% html_nodes(".certificate") %>% html_text()
+# runtime data:
+runtime_tmp = box_data %>% html_nodes(".text-muted") %>% html_nodes(".runtime") %>% html_text()
+runtime_data = vector()
+for (i in 0:length(runtime_tmp)) {
+  runtime_data[i] = substr(tmp[i],1,3)
+}
+
+# certificate data:
+certificate_data = box_data %>% html_nodes(".text-muted") %>% html_nodes(".certificate") %>% html_text()
+
+# genre data:
+gen_data = vector()
+genre_tmp = box_data %>% html_nodes(".text-muted") %>% html_nodes(".genre") %>% html_text()
+for (i in 0:length(genre_tmp)){
+  genre_data[i] = trimws(genre_tmp[i])
+}
+
+
+
+votes_data = box_data %>% html_nodes(".sort-num_votes-visible") %>% html_text()
+star_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes(".strong") %>% html_text()
+metascore_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes(".inline-block.ratings-metascore") %>% html_text()
