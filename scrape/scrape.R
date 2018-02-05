@@ -32,8 +32,11 @@ for (i in 0:length(genre_tmp)){
   genre_data[i] = trimws(genre_tmp[i])
 }
 
-
-
+# votes data: (incomplete)
 votes_data = box_data %>% html_nodes(".sort-num_votes-visible") %>% html_text()
-star_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes(".strong") %>% html_text()
+
+# star data:
+star_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes("strong") %>% html_text()
+
+# metascore data: (incmplete)
 metascore_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes(".inline-block.ratings-metascore") %>% html_text()
