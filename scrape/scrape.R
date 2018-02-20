@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Get working directory
 getwd()
 
@@ -11,7 +10,8 @@ library('rvest')
 # specify url to be scraped
 url = 'http://www.imdb.com/search/title?count=1000&groups=oscar_best_picture_winners&sort=year,desc&view=advanced&ref_=nv_ch_osc_2'
 
-# read HTML code from website
+##### SCRAPE THE DATA #####
+# read HTML code from website 
 webpage_HTML = read_html(url)
 
 box_data = html_nodes(webpage_HTML,".lister-item.mode-advanced")
@@ -33,11 +33,26 @@ for (i in 0:length(genre_tmp)){
   genre_data[i] = trimws(genre_tmp[i])
 }
 
-# votes data: (incomplete)
-votes_data = box_data %>% html_nodes(".sort-num_votes-visible") %>% html_text()
+# votes data:
+votes_data = vector()
+gross_data = vector()
+votes_tmp = box_data %>% html_nodes(".sort-num_votes-visible") %>% html_text()
+for (i in 1:length(votes_tmp)) {
+  tmp = strsplit(votes_tmp[i],"\n")
+  votes = tmp[[1]][3]
+  gross = tmp[[1]][5]
+  
+  votes_data[i] = gsub("[^0-9\\.]","",votes)
+  gross_data[i] = gsub("[^0-9\\.]","",gross)
+}
+
+gross_data = gross_data[!is.na(gross_data)]
+
+votes_data = as.numeric(votes_data)
+gross_data = as.numeric(gross_data)
 
 # star data:
-star_data = box_data %>% html_nodes(".ratings-bar") %>% html_nodes("strong") %>% html_text()
+star_data = as.numeric(box_data %>% html_nodes(".ratings-bar") %>% html_nodes("strong") %>% html_text())
 
 # metascore data: (incmplete)
 metascore_tmp = box_data %>% html_nodes(".ratings-bar") %>% html_nodes(".inline-block.ratings-metascore") %>% html_text()
@@ -45,5 +60,12 @@ metascore_data = vector()
 for (i in 1:length(metascore_tmp)) {
   metascore_data[i] = as.numeric(trimws(strsplit(metascore_tmp[i],"\n")[[1]][2]))
 }
-=======
->>>>>>> 843df455d0437bd7c9c99080afe5e95def1d884d
+
+##### PLOT THE DATA #####
+install.packages("ggplot2")
+
+# Certificate data (bar plot)
+cert_counts = sort(table(certificate_data),decreasing=TRUE)
+barplot(cert_counts, xlab = "Certificate of Movies")
+
+# 
