@@ -16,6 +16,11 @@ webpage_HTML = read_html(url)
 
 box_data = html_nodes(webpage_HTML,".lister-item.mode-advanced")
 
+name_data = box_data %>% html_nodes(".lister-item-header") %>% html_nodes("a") %>% html_text()
+
+year_tmp = box_data %>% html_nodes(".lister-item-header") %>% html_nodes("span.lister-item-year.text-muted.unbold") %>% html_text()
+year_data = as.numeric(gsub("[^0-9\\.]()","",year_tmp))
+
 # runtime data:
 runtime_tmp = box_data %>% html_nodes(".text-muted") %>% html_nodes(".runtime") %>% html_text()
 runtime_data = vector()
@@ -46,7 +51,8 @@ for (i in 1:length(votes_tmp)) {
   gross_data[i] = gsub("[^0-9\\.]","",gross)
 }
 
-gross_data = gross_data[!is.na(gross_data)]
+# Some data missing from the gross data
+# gross_data = gross_data[!is.na(gross_data)]
 
 votes_data = as.numeric(votes_data)
 gross_data = as.numeric(gross_data)
@@ -61,11 +67,8 @@ for (i in 1:length(metascore_tmp)) {
   metascore_data[i] = as.numeric(trimws(strsplit(metascore_tmp[i],"\n")[[1]][2]))
 }
 
-##### PLOT THE DATA #####
-install.packages("ggplot2")
+##### COMBINE DATA INTO A DATA FRAME #####
+oscars_df = data.frame(name_data, year_data, runtime_data, certificate_data, genre_data, votes_data, gross_data, star_data)
 
-# Certificate data (bar plot)
-cert_counts = sort(table(certificate_data),decreasing=TRUE)
-barplot(cert_counts, xlab = "Certificate of Movies")
-
-# 
+##### EXPORT THE DATA #####
+write.csv(oscars_df, "oscars_data.csv")
